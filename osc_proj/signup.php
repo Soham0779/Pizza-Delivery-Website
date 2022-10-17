@@ -11,14 +11,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 	$last_name = $_POST['last_name'];
 	$email = $_POST['email'];
 	$password = $_POST['password'];
+	$hashed_password = password_hash($password, PASSWORD_BCRYPT);
 	$confirm_password = $_POST['confirm_password'];
 	$contact = $_POST['contact'];
 
-	if (!empty($first_name) && !empty($last_name) && !empty($email) && !empty($password) && !empty($contact) && !is_numeric($first_name) && $password == $confirm_password) {
+	if (!empty($first_name) && !empty($last_name) && !empty($email) && !empty($password) && !empty($contact) && !is_numeric($first_name) && password_verify($confirm_password, $hashed_password)) {
 
 		//save to database
 		$user_id = random_num(20);
-		$query = "insert into users (user_id,first_name,last_name,email,password,contact) values ('$user_id','$first_name','$last_name','$email','$password','$contact')";
+		$query = "insert into users (user_id,first_name,last_name,email,password,contact) values ('$user_id','$first_name','$last_name','$email','$hashed_password','$contact')";
 
 		mysqli_query($con, $query);
 

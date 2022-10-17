@@ -5,7 +5,6 @@ session_start();
 	include("connection.php");
 	include("functions.php");
 
-
 	if($_SERVER['REQUEST_METHOD'] == "POST")
 	{
 		//something was posted
@@ -25,8 +24,9 @@ session_start();
 				{
 
 					$user_data = mysqli_fetch_assoc($result);
+					$hash = $user_data['password'];
 					
-					if($user_data['password'] === $password)
+					if(password_verify($password,$hash))
 					{
 
 						$_SESSION['user_id'] = $user_data['user_id'];
